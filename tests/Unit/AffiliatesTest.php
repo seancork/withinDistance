@@ -26,11 +26,14 @@ class AffiliatesTest extends TestCase
         $aff = new AffiliatesController();
         $affWithinDistance = $aff->getAffiliatesWithinDistance();
 
-        $first = $affWithinDistance[0]['affiliate_id'];
-        $seccond = $affWithinDistance[1]['affiliate_id'];
-
-        $this->assertGreaterThan($first, $seccond);
-
+        $lastId = 0;
+        foreach ($affWithinDistance as $a) {
+            if ($a['affiliate_id'] < $lastId) {
+                $this->fail('Are not in ascending order :(');
+            }
+            $lastId = $a['affiliate_id'];
+        }
+        $this->assertTrue(true);
     }
 
     public function test_ok_status_homepage()
